@@ -8,12 +8,12 @@ export default [
         {
           file: "dist/all-utils.js",
           format: "umd",
-          name: "Utils"
+          name: "OFUtils"
         },
         {
           file: "dist/all-utils.min.js",
           format: "umd",
-          name: "Utils",
+          name: "OFUtils",
           plugins: [terser()]
         }
       ]
@@ -28,7 +28,7 @@ export default [
         dir: "dist",
         format: "umd",
         entryFileNames: "[name].js",
-        name: "Utils"   // 浏览器全局变量
+        name: "OFUtils"   // 浏览器全局变量
       },
       plugins: [terser()]
     }

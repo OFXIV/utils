@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Utils = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.OFUtils = {}));
 })(this, (function (exports) { 'use strict';
 
   // src/json-converter/index.js
