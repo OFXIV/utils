@@ -1,7 +1,6 @@
 import { defineConfig } from "rollup";
 import terser from "@rollup/plugin-terser";
 export default [
-    // 1️⃣ 打包成一个总文件（all-utils.js）
     {
       input: "src/index.js",
       output: [
@@ -18,18 +17,8 @@ export default [
         }
       ]
     },
-  
-    // 2️⃣ 打包每个工具独立文件
     {
-      input: {
-        "json-converter": "src/json-converter/index.js", // json转换工具
-      },
-      output: {
-        dir: "dist",
-        format: "umd",
-        entryFileNames: "[name].js",
-        name: "OFUtils"   // 浏览器全局变量
-      },
-      plugins: [terser()]
-    }
+      input: 'src/json-converter/index.js',
+      output: { file: 'dist/json-converter.js', format: 'umd', name: 'JsonConverter' }
+    },
   ];
