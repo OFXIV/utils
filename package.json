@@ -1,0 +1,12 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.21.0"
+  }
+}
