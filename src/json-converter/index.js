@@ -86,13 +86,18 @@ const JsonConverter = {
   },
 
   /**
-   * 将对象转换为XML格式字符串
+   * 将对象转换为 XML 格式字符串
    * @param {Object} obj - 要转换的对象
    * @param {string} [rootName="root"] - 根元素名称
-   * @returns {string} XML格式字符串
+   * @returns {string} XML 格式字符串
    */
   toXML(obj, rootName = "root") {
-    if (!obj) throw new Error("输入不能为空");
+    if (obj === null || obj === undefined) {
+      console.error("[toXML] 输入不能为空");
+      return "";
+    }
+
+    rootName = rootName || "root";
 
     const escapeXml = (unsafe) => {
       if (unsafe === null || unsafe === undefined) return "";
@@ -105,67 +110,26 @@ const JsonConverter = {
     };
 
     const convertToXml = (data, nodeName) => {
+      // 基本类型
       if (typeof data !== "object" || data === null) {
         return `<${nodeName}>${escapeXml(data)}</${nodeName}>`;
       }
 
+      // 数组
       if (Array.isArray(data)) {
+        if (data.length === 0) return `<${nodeName}/>`;
         return data.map(item => convertToXml(item, nodeName)).join("");
       }
 
-      let xml = `<${nodeName}>`;
-      for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-          xml += convertToXml(data[key], key);
-        }
-      }
-      xml += `</${nodeName}>`;
-      return xml;
+      // 对象
+      const keys = Object.keys(data);
+      if (keys.length === 0) return `<${nodeName}/>`;
+      
+      const innerXml = keys.map(key => convertToXml(data[key], key)).join("");
+      return `<${nodeName}>${innerXml}</${nodeName}>`;
     };
 
     return convertToXml(obj, rootName);
-  },
-
-  /**
-   * 将对象转换为YAML格式字符串
-   * @param {Object} obj - 要转换的对象
-   * @param {number} [indent=2] - 缩进空格数
-   * @returns {string} YAML格式字符串
-   */
-  toYAML(obj, indent = 2) {
-    if (!obj) throw new Error("输入不能为空");
-
-    const spaces = " ".repeat(indent);
-
-    const convertToYaml = (data, currentIndent = 0) => {
-      const currentSpaces = " ".repeat(currentIndent);
-
-      if (typeof data !== "object" || data === null) {
-        return `${String(data)}`;
-      }
-
-      if (Array.isArray(data)) {
-        return data.map(item => {
-          const itemStr = convertToYaml(item, currentIndent + indent);
-          return `${currentSpaces}- ${itemStr.trim()}`;
-        }).join("\n");
-      }
-
-      let yaml = "";
-      for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-          const value = data[key];
-          if (typeof value === "object" && value !== null) {
-            yaml += `${currentSpaces}${key}:\n${convertToYaml(value, currentIndent + indent)}\n`;
-          } else {
-            yaml += `${currentSpaces}${key}: ${String(value)}\n`;
-          }
-        }
-      }
-      return yaml;
-    };
-
-    return convertToYaml(obj);
   },
 
   /**
