@@ -1,6 +1,29 @@
 // src/json-converter/index.js
 
 const JsonConverter = {
+  /**
+   * 解析JSON字符串为JavaScript对象
+   * @param {string} jsonString - 要解析的JSON字符串
+   * @returns {Object|null} 解析后的对象，如果解析失败则返回null
+   */
+  parseJSON(jsonString) {
+    if (typeof jsonString !== 'string') {
+      console.error("Invalid input: expected a string, got", typeof jsonString);
+      return null;
+    }
+
+    if (jsonString.trim() === '') {
+      console.error("Invalid JSON string: empty string");
+      return null;
+    }
+
+    try {
+      return JSON.parse(jsonString);
+    } catch (e) {
+      console.error("Invalid JSON string:", e.message);
+      return null;
+    }
+  },
   validateJSON(jsonString) {
     if (typeof jsonString !== 'string') {
       return {
